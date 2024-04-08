@@ -21,6 +21,7 @@ class ExampleAuthenticate
         // BrickletDualButtonV2 dualb = new("", ipcon);
         // BrickletNFC nfc = new("", ipcon);
         // //Aktoren
+        Speaker speaker = new(ipcon,"R7M");
         // BrickletPiezoSpeakerV2 piezo = new("", ipcon);
         // BrickletEPaper296x128 epaper = new("", ipcon);
         // BrickletSegmentDisplay4x7V2 segment = new("", ipcon);
