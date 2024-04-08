@@ -10,10 +10,10 @@ class ExampleAuthenticate
     {
         IPConnection ipcon = new IPConnection();
         // //Sensoren
-        TemperaturSensor sensor = new TemperaturSensor(ipcon, "Wcg");
+        TemperaturSensor sensor = new(ipcon, "Wcg");
         // BrickletPiezoSpeakerV2 ps = new("R7M", ipcon);
         // BrickletAmbientLightV3 al = new("",ipcon);
-        // BrickletHumidityV2 hu = new("",ipcon);
+        FeuchtigkeitSensor feucht = new(ipcon, "ViW");
         // BrickletMotionDetectorV2 mo = new("", ipcon);
         // BrickletRGBLEDButton rgbbutton = new("", ipcon);
         // BrickletDualButtonV2 dualb = new("", ipcon);
@@ -31,9 +31,10 @@ class ExampleAuthenticate
         do {
 
             //ps.SetBeep(1000, 1, 1000);
-        Thread.Sleep(1000);
-        double temperature = sensor.GetTemperature();
-        Console.WriteLine("Temperature: " + temperature + " °C");
+            Thread.Sleep(1000);
+            double temperature = sensor.GetTemperature();
+            Console.WriteLine("Temperature: " + temperature + " °C");
+            feucht.GetHumidity();
 
         } while (!Console.KeyAvailable);
         ipcon.Disconnect();
