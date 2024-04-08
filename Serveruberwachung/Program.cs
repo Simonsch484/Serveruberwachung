@@ -32,8 +32,7 @@ class ExampleAuthenticate
 
             //ps.SetBeep(1000, 1, 1000);
         Thread.Sleep(1000);
-        double temperature = sensor.GetTemperature();
-        Console.WriteLine("Temperature: " + temperature + " °C");
+        sensor.GetTemperature();
 
         } while (!Console.KeyAvailable);
         ipcon.Disconnect();
