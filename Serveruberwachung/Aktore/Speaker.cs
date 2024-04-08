@@ -13,7 +13,7 @@ using Tinkerforge;
 
         public void Alarm(byte volume, long duration)
         {
-            piezoSpeaker.SetAlarm(800, 2000, 10, 1, volume, duration);;
+            piezoSpeaker.SetAlarm(800, 2000, 10, 1, volume, duration);
         }
 
         public void Beep(byte volume, long duration)
