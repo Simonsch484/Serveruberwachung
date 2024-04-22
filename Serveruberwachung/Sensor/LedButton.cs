@@ -12,10 +12,11 @@ namespace Program
             rgbLEDButton = new BrickletRGBLEDButton(uid, ipcon);
         }
 
-        public void GetButtonState()
+        public bool GetButtonState()
         {
             bool buttonPressed = Convert.ToBoolean(rgbLEDButton.GetButtonState());
             Console.WriteLine($"Taste gedrückt: {buttonPressed}");
+            return buttonPressed;
         }
 
         public void SetRGBLEDColor(byte red, byte green, byte blue)

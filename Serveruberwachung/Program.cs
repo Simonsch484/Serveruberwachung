@@ -46,10 +46,15 @@ namespace Program
 
         do {
 
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             // buttonHandler.GetLEDState();
-            rgbLEDButton.GetButtonState();
-            rgbLEDButton.SetRGBLEDColor(0,255,0);
+            if(rgbLEDButton.GetButtonState() == true){
+                rgbLEDButton.SetRGBLEDColor(255,0,0);
+            }
+            else{
+                rgbLEDButton.SetRGBLEDColor(0,255,0);
+            }
+            
             // tempSensor.GetTemperature();
             // lightSensor.GetLightIntensity();
             // motionSensor.IsMotionDetected();
