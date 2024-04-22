@@ -17,6 +17,7 @@ namespace Program
             MotionSensor motionSensor = new MotionSensor(ipcon, "ML4");
             DualButtonBrickletHandler buttonHandler = new DualButtonBrickletHandler(ipcon, "Vd8");
             RGBLEDButtonBrickletHandler rgbLEDButton = new RGBLEDButtonBrickletHandler(ipcon, "23Qx");
+            LCDDisplayBrickletHandler lcdDisplay = new LCDDisplayBrickletHandler(ipcon, "24Rh");
             // BrickletPiezoSpeakerV2 ps = new("R7M", ipcon);
             // BrickletAmbientLightV3 al = new("",ipcon);
             FeuchtigkeitSensor feucht = new FeuchtigkeitSensor(ipcon, "ViW");
@@ -46,14 +47,16 @@ namespace Program
 
         do {
 
-            Thread.Sleep(100);
+            Thread.Sleep(1000);
+            lcdDisplay.DisplayText(7,"testing 01");
+
             // buttonHandler.GetLEDState();
-            if(rgbLEDButton.GetButtonState() == true){
-                rgbLEDButton.SetRGBLEDColor(255,0,0);
-            }
-            else{
-                rgbLEDButton.SetRGBLEDColor(0,255,0);
-            }
+            // if(rgbLEDButton.GetButtonState() == true){
+            //     rgbLEDButton.SetRGBLEDColor(255,0,0);
+            // }
+            // else{
+            //     rgbLEDButton.SetRGBLEDColor(0,255,0);
+            // }
             
             // tempSensor.GetTemperature();
             // lightSensor.GetLightIntensity();
