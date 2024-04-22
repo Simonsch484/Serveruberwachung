@@ -17,5 +17,8 @@ namespace Program
             lcd.WriteLine(lines, 0, text);
             Console.WriteLine($"Text auf dem LCD-Display angezeigt: {text}");
         }
+        public void ClearText(){
+            lcd.ClearDisplay();
+        }
     }
 }

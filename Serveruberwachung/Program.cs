@@ -47,8 +47,19 @@ namespace Program
 
         do {
 
-            Thread.Sleep(1000);
-            lcdDisplay.DisplayText(7,"testing 01");
+            Thread.Sleep(5000);
+            
+            lcdDisplay.ClearText();
+            var temp = tempSensor.GetTemperature();
+            lcdDisplay.DisplayText(0,"temp: " + temp.ToString().Replace(",", ".") + " °C");
+            var light = lightSensor.GetLightIntensity();
+            lcdDisplay.DisplayText(1,"Light: " + light.ToString().Replace(",", "."));
+            var motion = motionSensor.IsMotionDetected();
+            lcdDisplay.DisplayText(2,"Motion detected: " + motion.ToString().Replace(",", "."));
+            var feuchtigkeit =feucht.GetHumidity();
+            lcdDisplay.DisplayText(3,"Humidity: " + feuchtigkeit.ToString().Replace(",", ".") + "%");
+            var now = new DateTime();
+            lcdDisplay.DisplayText(7,now.TimeOfDay.ToString());
 
             // buttonHandler.GetLEDState();
             // if(rgbLEDButton.GetButtonState() == true){
@@ -58,10 +69,7 @@ namespace Program
             //     rgbLEDButton.SetRGBLEDColor(0,255,0);
             // }
             
-            // tempSensor.GetTemperature();
-            // lightSensor.GetLightIntensity();
-            // motionSensor.IsMotionDetected();
-            // feucht.GetHumidity();
+            
 
         } while (!Console.KeyAvailable);
 
