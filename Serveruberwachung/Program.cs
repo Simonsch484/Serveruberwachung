@@ -17,10 +17,8 @@ namespace Program
             MotionSensor motionSensor = new MotionSensor(ipcon, "ML4");
             DualButtonBrickletHandler buttonHandler = new DualButtonBrickletHandler(ipcon, "Vd8");
             RGBLEDButtonBrickletHandler rgbLEDButton = new RGBLEDButtonBrickletHandler(ipcon, "23Qx");
-            // BrickletPiezoSpeakerV2 ps = new("R7M", ipcon);
             // BrickletAmbientLightV3 al = new("",ipcon);
             FeuchtigkeitSensor feucht = new FeuchtigkeitSensor(ipcon, "ViW");
-            // BrickletMotionDetectorV2 mo = new("", ipcon);
             // BrickletRGBLEDButton rgbbutton = new("", ipcon);
             // BrickletDualButtonV2 dualb = new("", ipcon);
             // BrickletNFC nfc = new("", ipcon);
@@ -28,7 +26,7 @@ namespace Program
             Speaker speaker = new Speaker(ipcon,"R7M");
             // BrickletPiezoSpeakerV2 piezo = new("", ipcon);
             // BrickletEPaper296x128 epaper = new("", ipcon);
-            // BrickletSegmentDisplay4x7V2 segment = new("", ipcon);
+            Segment segment = new(ipcon, "Tre");
             // BrickletLCD128x64 lcd = new("", ipcon);
 
             ipcon.Connect(HOST, PORT);
@@ -37,24 +35,21 @@ namespace Program
             buttonHandler.dualButton.StateChangedCallback += buttonHandler.OnButtonStateChanged;
             buttonHandler.dualButton.SetStateChangedCallbackConfiguration(true);
 
-            // EventHandler hinzufügen
-            // #pragma warning disable CS8622
-            // buttonHandler.ButtonStateChanged += OnButtonStateChanged;
-            // #pragma warning restore CS8622
 
             Console.WriteLine("connected");
 
         do {
 
-            Thread.Sleep(100);
+            Thread.Sleep(500);
             // buttonHandler.GetLEDState();
-            if(rgbLEDButton.GetButtonState() == true){
+            if(rgbLEDButton.GetButtonState()){
                 rgbLEDButton.SetRGBLEDColor(255,0,0);
             }
             else{
                 rgbLEDButton.SetRGBLEDColor(0,255,0);
             }
             
+                segment.setText(tempSensor.GetTemperature());
             // tempSensor.GetTemperature();
             // lightSensor.GetLightIntensity();
             // motionSensor.IsMotionDetected();
