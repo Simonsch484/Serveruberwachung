@@ -16,7 +16,7 @@ public class Segment
         short[] shortArray = new short[tempstring.Length];
         for (int i = 0; i < tempstring.Length; i++)
         {
-            Console.WriteLine("test:" + tempstring[i]);
+            Console.WriteLine("test: " + tempstring[i]);
             shortArray[i] = (short)tempstring[i];
         }
         
