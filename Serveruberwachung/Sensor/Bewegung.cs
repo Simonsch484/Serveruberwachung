@@ -15,7 +15,7 @@ using System;
         public bool IsMotionDetected()
         {
             bool motion = Convert.ToBoolean(motionDetector.GetMotionDetected());
-            Console.WriteLine("Motion: " + motion);
+            // Console.WriteLine("Motion: " + motion);
             return motion;
         }
     }

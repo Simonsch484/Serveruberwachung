@@ -14,7 +14,7 @@ using Tinkerforge;
         public double GetLightIntensity()
         {
             long intensity = ambientLight.GetIlluminance();
-            Console.WriteLine("Helligkeit: " + intensity/100);
+            // Console.WriteLine("Helligkeit: " + intensity/100);
             return intensity/100;
         }
     }

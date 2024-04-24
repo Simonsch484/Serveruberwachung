@@ -15,7 +15,7 @@ public class TemperaturSensor
     public double GetTemperature()
     {
         double temperatur = ptc.GetTemperature();
-        Console.WriteLine("Temperatur: " + temperatur/100 + " °C");
+        // Console.WriteLine("Temperatur: " + temperatur/100 + " °C");
         return temperatur/100;
     }
 }
