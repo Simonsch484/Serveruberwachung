@@ -16,6 +16,6 @@ public class TemperaturSensor
     {
         double temperatur = ptc.GetTemperature();
         Console.WriteLine("Temperatur: " + temperatur/100 + " °C");
-        return temperatur; // Convert temperature to degrees Celsius
+        return temperatur/100;
     }
 }
