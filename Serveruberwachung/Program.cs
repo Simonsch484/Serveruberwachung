@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualBasic;
 using Tinkerforge;
 
 namespace Program
@@ -26,7 +27,7 @@ namespace Program
 
             // //Aktoren
             Speaker speaker = new Speaker(ipcon,"R7M");
-            // BrickletEPaper296x128 epaper = new("", ipcon);
+            EPaperDisplay ePaperDisplay = new EPaperDisplay(ipcon, "XGL");
             Segment segment = new(ipcon, "Tre");
             // BrickletLCD128x64 lcd = new("", ipcon);
 
@@ -60,6 +61,13 @@ namespace Program
             lcdDisplay.DisplayText(3,"Humidity: " + feuchtigkeit + "%");
             DateTime currentTime = DateTime.Now;
             lcdDisplay.DisplayText(7,"Time: " + currentTime.ToString("HH:mm:ss"));
+            int x = 0;
+            if(x==0){
+                ePaperDisplay.DisplayTemperature(temp);
+                x++;
+            }
+            
+            
 
 
         } while (!Console.KeyAvailable);
