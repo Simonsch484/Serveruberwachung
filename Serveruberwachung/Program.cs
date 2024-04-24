@@ -35,7 +35,7 @@ namespace Program
             // BrickletLCD128x64 lcd = new("", ipcon);
 
             ipcon.Connect(HOST, PORT);
-            Console.WriteLine("Verbunden");
+            Console.WriteLine("Verbdunden");
 
             buttonHandler.dualButton.StateChangedCallback += buttonHandler.OnButtonStateChanged;
             buttonHandler.dualButton.SetStateChangedCallbackConfiguration(true);
