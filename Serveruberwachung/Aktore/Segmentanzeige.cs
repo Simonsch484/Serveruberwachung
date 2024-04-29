@@ -13,13 +13,13 @@ public class Segment
     public void setText(double temp)
     {
         var tempstring = temp.ToString();
+        segment.SetBrightness(7);
         short[] shortArray = new short[tempstring.Length];
         for (int i = 0; i < tempstring.Length; i++)
         {
-            Console.WriteLine("test: " + tempstring[i]);
             shortArray[i] = (short)tempstring[i];
+            Console.WriteLine("Segment: " + shortArray[i]);
         }
-        
         segment.SetNumericValue(shortArray);
     }
 }
