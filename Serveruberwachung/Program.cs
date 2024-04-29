@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualBasic;
 using Tinkerforge;
 
 namespace Program
@@ -23,8 +24,8 @@ namespace Program
 
             // //Aktoren
             Speaker speaker = new Speaker(ipcon,"R7M");
-            // BrickletEPaper296x128 epaper = new("", ipcon);
             NFC nfc = new(ipcon, "22ND");
+            EPaperDisplay ePaperDisplay = new EPaperDisplay(ipcon, "XGL");
             Segment segment = new(ipcon, "Tre");
             // BrickletLCD128x64 lcd = new("", ipcon);
 
@@ -38,30 +39,31 @@ namespace Program
 
             do {
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
+
             if(rgbLEDButton.GetButtonState()){
                 rgbLEDButton.SetRGBLEDColor(255,0,0);
             }
             else{
                 rgbLEDButton.SetRGBLEDColor(0,255,0);
             }
+            
             segment.setText(tempSensor.GetTemperature());
-                /*
-                #region lcdDisplay
-                lcdDisplay.ClearText();
-                var temp = tempSensor.GetTemperature();
-                lcdDisplay.DisplayText(0,"temp: " + temp.ToString().Replace(",", ".") + " °C");
-                var light = lightSensor.GetLightIntensity();
-                lcdDisplay.DisplayText(1,"Light: " + light.ToString().Replace(",", "."));
-                var motion = motionSensor.IsMotionDetected();
-                lcdDisplay.DisplayText(2,"Motion detected: " + motion.ToString().Replace(",", "."));
-                var feuchtigkeit =feucht.GetHumidity();
-                lcdDisplay.DisplayText(3,"Humidity: " + feuchtigkeit.ToString().Replace(",", ".") + "%");
-                var now = new DateTime();
-                lcdDisplay.DisplayText(7,now.TimeOfDay.ToString());
-                #endregion
-                */
-            } while (!Console.KeyAvailable);
+            
+            lcdDisplay.ClearText();
+            var temp = tempSensor.GetTemperature();
+            lcdDisplay.DisplayText(0,"temp: " + temp.ToString().Replace(",", ".") + " °C");
+            var light = lightSensor.GetLightIntensity();
+            lcdDisplay.DisplayText(1,"Light: " + light.ToString().Replace(",", "."));
+            var motion = motionSensor.IsMotionDetected();
+            lcdDisplay.DisplayText(2,"Motion detected: " + motion.ToString().Replace(",", "."));
+            var feuchtigkeit =feucht.GetHumidity();
+            lcdDisplay.DisplayText(3,"Humidity: " + feuchtigkeit.ToString().Replace(",", ".") + "%");
+            var now = new DateTime();
+            lcdDisplay.DisplayText(7,now.TimeOfDay.ToString());
+
+
+        } while (!Console.KeyAvailable);
 
             ipcon.Disconnect();
             Console.WriteLine("Verbindung getrennt");

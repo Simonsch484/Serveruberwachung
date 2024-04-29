@@ -14,7 +14,7 @@ public class FeuchtigkeitSensor
     public double GetHumidity()
     {
         short humidity = hum.GetChipTemperature();
-        Console.WriteLine("Feuchtigkeit:"+ humidity);
+        // Console.WriteLine("Feuchtigkeit:"+ humidity);
         return humidity; 
     }
 }
