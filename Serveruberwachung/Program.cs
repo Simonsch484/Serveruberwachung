@@ -93,6 +93,21 @@ namespace Program
                 lcdDisplay.DisplayText(2, $"Motion detected: {motion}");
                 lcdDisplay.DisplayText(3, $"Humidity: {feuchtigkeit:F2} %");
         }
+
+        static async Task CheckHumidity(double feuchtigkeit, NFC nfc, Speaker speaker, LCDDisplayBrickletHandler lcdDisplay)
+        {
+            if ((feuchtigkeit < 25 || feuchtigkeit > 60) && alarmActive)
+            {
+                System.Console.WriteLine(nfc.NfcAuth());
+                if (!nfc.NfcAuth())
+                {
+                    speaker.Beep(3, 1000);
+                    lcdDisplay.DisplayText(5, "   !--Wet or Dry --!");
+                }
+
+                await Task.Delay(2000);
+            }
+        }
         static async Task CheckTemp(double temp, NFC nfc, Speaker speaker, LCDDisplayBrickletHandler lcdDisplay)
         {
             if (temp > 27 && alarmActive)
