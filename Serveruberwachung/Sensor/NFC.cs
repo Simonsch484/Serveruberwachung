@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace Program;
 using System;
 using System.Text;
@@ -7,7 +9,9 @@ public class NFC
 {
     // private IPConnection ipcon;
     public BrickletNFC nfc;
-
+    string expectedTagIDHexString = "0xEA 0x8E 0x36 0x9E";
+    string expectedTagIDHexString2 ="0xDD 0x63 0x60 0xC4";
+    string tagIDHexString;
     public NFC(IPConnection ipcon, string uid)
     {
         nfc = new BrickletNFC(uid, ipcon);
@@ -19,7 +23,7 @@ public class NFC
         {
             byte tagType;
             StringBuilder tagIDBuilder = new();
-            string expectedTagIDHexString = "0xEA 0x8E 0x36 0x9E";
+            
             byte[] tagID;
             String tagInfo;
 
@@ -29,10 +33,10 @@ public class NFC
             {
                 tagIDBuilder.AppendFormat("0x{0:X2} ", b);
             }
-            string tagIDHexString = tagIDBuilder.ToString().Trim();
+            tagIDHexString = tagIDBuilder.ToString().Trim();
 
 
-            if (tagIDHexString == expectedTagIDHexString)
+            if (tagIDHexString == expectedTagIDHexString2)
                 Console.WriteLine("ID IS CORRECT");
             else
                 Console.WriteLine("ID DOES NOT MATCH");
@@ -46,5 +50,15 @@ public class NFC
         {
             sender.ReaderRequestTagID();
         }
+    }
+
+    public bool NfcAuth(){
+        
+        if(tagIDHexString == expectedTagIDHexString2){
+            tagIDHexString = "";
+            return true;
+        }
+        else
+        return false;
     }
 }
