@@ -70,6 +70,7 @@ namespace Program
                 }
 
                 await CheckTemp(temp,nfc,speaker,lcdDisplay);
+                await CheckHumidity(feuchtigkeit,nfc,speaker,lcdDisplay);
 
                 //segment.setText(temp);
 
@@ -101,7 +102,7 @@ namespace Program
                 System.Console.WriteLine(nfc.NfcAuth());
                 if (!nfc.NfcAuth())
                 {
-                    speaker.Beep(3, 1000);
+                    speaker.Alarm(2, 3000);
                     lcdDisplay.DisplayText(5, "   !--Wet or Dry --!");
                 }
 
