@@ -9,9 +9,9 @@ public class NFC
 {
     // private IPConnection ipcon;
     public BrickletNFC nfc;
-    string expectedTagIDHexString = "0xEA 0x8E 0x36 0x9E";
-    string expectedTagIDHexString2 ="0xDD 0x63 0x60 0xC4";
-    string tagIDHexString;
+    string expectedTagIDHexString = "EA 8E 36 9E";
+    string expectedTagIDHexString2 ="DD 63 60 C4";
+    public string tagIDHexString;
     public NFC(IPConnection ipcon, string uid)
     {
         nfc = new BrickletNFC(uid, ipcon);
@@ -31,7 +31,7 @@ public class NFC
 
             foreach (byte b in tagID)
             {
-                tagIDBuilder.AppendFormat("0x{0:X2} ", b);
+                tagIDBuilder.AppendFormat("{0:X2} ", b);
             }
             tagIDHexString = tagIDBuilder.ToString().Trim();
 
@@ -53,12 +53,7 @@ public class NFC
     }
 
     public bool NfcAuth(){
-        
-        if(tagIDHexString == expectedTagIDHexString2){
-            tagIDHexString = "";
-            return true;
-        }
-        else
-        return false;
+
+        return tagIDHexString == expectedTagIDHexString2;
     }
 }

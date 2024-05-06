@@ -9,8 +9,9 @@ namespace Program
     {
         private static string HOST = "172.20.10.242";
         private static int PORT = 4223;
-
-        static void Main()
+        static int nfcCounter = 0;
+        static bool alarmActive = false;
+        static async void Main()
         {
             IPConnection ipcon = new IPConnection();
             // //Sensoren
@@ -27,10 +28,8 @@ namespace Program
             Speaker speaker = new Speaker(ipcon,"R7M");
             NFC nfc = new(ipcon, "22ND");
             EPaperDisplay ePaperDisplay = new EPaperDisplay(ipcon, "XGL");
-            Segment segment = new(ipcon, "Tre");
-            // BrickletLCD128x64 lcd = new("", ipcon);
-
-            bool alarmActive = false;
+            Segment segment = new(ipcon, "Tre");           
+            
 
             ipcon.Connect(HOST, PORT);
             Console.WriteLine("Verbunden");
@@ -42,57 +41,81 @@ namespace Program
 
             do {
 
-            Thread.Sleep(1000);
+                await Task.Delay(1000);
+                var temp = tempSensor.GetTemperature();
+                var light = lightSensor.GetLightIntensity();
+                var motion = motionSensor.IsMotionDetected();
+                var feuchtigkeit = feucht.GetHumidity();
+                //nach 15 Malen wird zurückgesetzt
+                NFCCounter(nfc, 15);
 
-            //Alarm switch
-            if(!rgbLEDButton.GetButtonState() && !alarmActive){
+                //Alarm switch
+                if (!rgbLEDButton.GetButtonState() && !alarmActive){
                 alarmActive = true;
                 rgbLEDButton.SetRGBLEDColor(255,0,0);
                 
-            }
-            else if(!rgbLEDButton.GetButtonState() && alarmActive){
-                alarmActive = false;
-                rgbLEDButton.SetRGBLEDColor(0,255,0);
-            }
-            else if(nfc.NfcAuth() && alarmActive){
-                alarmActive = false;
-                rgbLEDButton.SetRGBLEDColor(0,0,255);
-            }
-
-            if(tempSensor.GetTemperature() > 27 && alarmActive ){
-                System.Console.WriteLine(nfc.NfcAuth());
-                if(!nfc.NfcAuth()){
-                    speaker.Beep(3 , 1000);
-                    lcdDisplay.DisplayText(6,"   !-- Overheat --!");
                 }
-                
-                Thread.Sleep(2000);
-            }
+                else if(!rgbLEDButton.GetButtonState() && alarmActive){
+                    alarmActive = false;
+                    rgbLEDButton.SetRGBLEDColor(0,255,0);
+                }
+                else if(nfc.NfcAuth() && alarmActive){
+                    alarmActive = false;
+                    rgbLEDButton.SetRGBLEDColor(0,0,255);
+                }
 
-        
-            
-            // segment.setText(tempSensor.GetTemperature());
-            
+                await CheckTemp(temp,nfc,speaker,lcdDisplay);
 
-            //lcd-Bildschirm Stats
-
-            // lcdDisplay.ClearText();
-            // var temp = tempSensor.GetTemperature();
-            // var light = lightSensor.GetLightIntensity();
-            // var motion = motionSensor.IsMotionDetected();
-            // var feuchtigkeit =feucht.GetHumidity();
-            // var now = new DateTime();
-            // lcdDisplay.DisplayText(0,"temp: " + temp.ToString().Replace(",", ".") + " °C");
-            // lcdDisplay.DisplayText(1,"Light: " + light.ToString().Replace(",", "."));
-            // lcdDisplay.DisplayText(2,"Motion detected: " + motion.ToString().Replace(",", "."));
-            // lcdDisplay.DisplayText(3,"Humidity: " + feuchtigkeit.ToString().Replace(",", ".") + "%");
-            // lcdDisplay.DisplayText(7,now.TimeOfDay.ToString());
+                //segment.setText(temp);
 
 
-        } while (!Console.KeyAvailable);
+                //lcd-Bildschirm Stats
+                if (light > 500)
+                    await ShowLCDDisplay(temp, light, motion, feuchtigkeit, lcdDisplay);
+
+
+            } while (!Console.KeyAvailable);
 
             ipcon.Disconnect();
             Console.WriteLine("Verbindung getrennt");
+        }
+        static async Task ShowLCDDisplay(double temp, double light, bool motion, double feuchtigkeit, LCDDisplayBrickletHandler lcdDisplay)
+        {
+
+                lcdDisplay.ClearText();
+                lcdDisplay.DisplayText(0, $"Temp: {temp:F2} °C");
+                lcdDisplay.DisplayText(1, $"Light: {light:F2}");
+                lcdDisplay.DisplayText(2, $"Motion detected: {motion}");
+                lcdDisplay.DisplayText(3, $"Humidity: {feuchtigkeit:F2} %");
+        }
+        static async Task CheckTemp(double temp, NFC nfc, Speaker speaker, LCDDisplayBrickletHandler lcdDisplay)
+        {
+            if (temp > 27 && alarmActive)
+            {
+                System.Console.WriteLine(nfc.NfcAuth());
+                if (!nfc.NfcAuth())
+                {
+                    speaker.Beep(3, 1000);
+                    lcdDisplay.DisplayText(6, "   !-- Overheat --!");
+                }
+
+                await Task.Delay(2000);
+            }
+        }
+        static void NFCCounter(NFC nfc, int counter)
+        {
+            if (nfc.NfcAuth())
+            {
+                if (nfcCounter >= counter)
+                {
+                    nfc.tagIDHexString = "";
+                    nfcCounter = 0;
+                }
+                else
+                    nfcCounter++;
+            }
+            else
+                nfcCounter = 0;
         }
     }
 }
