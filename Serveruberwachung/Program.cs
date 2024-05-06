@@ -47,18 +47,18 @@ namespace Program
             //Temperatur
 
             //button switch
-            if(rgbLEDButton.GetButtonState() == true && alarmActive == false){
+            if(rgbLEDButton.GetButtonState() && !alarmActive){
                 alarmActive = true;
                 rgbLEDButton.SetRGBLEDColor(255,0,0);
                 
             }
-            else if(rgbLEDButton.GetButtonState() == true && alarmActive == true){
+            else if(rgbLEDButton.GetButtonState() && alarmActive){
                 alarmActive = false;
                 rgbLEDButton.SetRGBLEDColor(0,255,0);
             }
 
-            if(tempSensor.GetTemperature() > 30 && alarmActive == true){
-                if(nfc.NfcAuth() == false){
+            if(tempSensor.GetTemperature() > 30 && alarmActive ){
+                if(!nfc.NfcAuth()){
                     speaker.Beep(3 , 1000);
                     lcdDisplay.DisplayText(6,"   !-- Overheat --!");
                 }
@@ -75,14 +75,14 @@ namespace Program
 
             lcdDisplay.ClearText();
             var temp = tempSensor.GetTemperature();
-            lcdDisplay.DisplayText(0,"temp: " + temp.ToString().Replace(",", ".") + " °C");
             var light = lightSensor.GetLightIntensity();
-            lcdDisplay.DisplayText(1,"Light: " + light.ToString().Replace(",", "."));
             var motion = motionSensor.IsMotionDetected();
-            lcdDisplay.DisplayText(2,"Motion detected: " + motion.ToString().Replace(",", "."));
             var feuchtigkeit =feucht.GetHumidity();
-            lcdDisplay.DisplayText(3,"Humidity: " + feuchtigkeit.ToString().Replace(",", ".") + "%");
             var now = new DateTime();
+            lcdDisplay.DisplayText(0,"temp: " + temp.ToString().Replace(",", ".") + " °C");
+            lcdDisplay.DisplayText(1,"Light: " + light.ToString().Replace(",", "."));
+            lcdDisplay.DisplayText(2,"Motion detected: " + motion.ToString().Replace(",", "."));
+            lcdDisplay.DisplayText(3,"Humidity: " + feuchtigkeit.ToString().Replace(",", ".") + "%");
             lcdDisplay.DisplayText(7,now.TimeOfDay.ToString());
 
 

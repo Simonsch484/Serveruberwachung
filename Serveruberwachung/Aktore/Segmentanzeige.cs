@@ -13,7 +13,6 @@ public class Segment
     public void setText(double temp)
     {
         var tempstring = temp.ToString();
-        segment.SetBrightness(7);
         short[] shortArray = new short[tempstring.Length];
         for (int i = 0; i < tempstring.Length; i++)
         {
@@ -21,5 +20,7 @@ public class Segment
             Console.WriteLine("Segment: " + shortArray[i]);
         }
         segment.SetNumericValue(shortArray);
+        segment.SetSelectedSegment(15, true);
+        segment.SetSelectedSegment(34, true);
     }
 }
