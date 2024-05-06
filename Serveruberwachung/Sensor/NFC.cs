@@ -43,7 +43,7 @@ public class NFC
 
 
             tagInfo = String.Format("Found tag of type {0} with ID [{1}]", tagType, tagIDHexString);
-            Console.WriteLine(tagInfo);
+            // Console.WriteLine(tagInfo);
         }
 
         if (idle)

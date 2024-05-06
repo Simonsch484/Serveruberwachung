@@ -44,20 +44,23 @@ namespace Program
 
             Thread.Sleep(1000);
 
-            //Temperatur
-
-            //button switch
-            if(rgbLEDButton.GetButtonState() && !alarmActive){
+            //Alarm switch
+            if(!rgbLEDButton.GetButtonState() && !alarmActive){
                 alarmActive = true;
                 rgbLEDButton.SetRGBLEDColor(255,0,0);
                 
             }
-            else if(rgbLEDButton.GetButtonState() && alarmActive){
+            else if(!rgbLEDButton.GetButtonState() && alarmActive){
                 alarmActive = false;
                 rgbLEDButton.SetRGBLEDColor(0,255,0);
             }
+            else if(nfc.NfcAuth() && alarmActive){
+                alarmActive = false;
+                rgbLEDButton.SetRGBLEDColor(0,0,255);
+            }
 
-            if(tempSensor.GetTemperature() > 30 && alarmActive ){
+            if(tempSensor.GetTemperature() > 27 && alarmActive ){
+                System.Console.WriteLine(nfc.NfcAuth());
                 if(!nfc.NfcAuth()){
                     speaker.Beep(3 , 1000);
                     lcdDisplay.DisplayText(6,"   !-- Overheat --!");
@@ -73,17 +76,17 @@ namespace Program
 
             //lcd-Bildschirm Stats
 
-            lcdDisplay.ClearText();
-            var temp = tempSensor.GetTemperature();
-            var light = lightSensor.GetLightIntensity();
-            var motion = motionSensor.IsMotionDetected();
-            var feuchtigkeit =feucht.GetHumidity();
-            var now = new DateTime();
-            lcdDisplay.DisplayText(0,"temp: " + temp.ToString().Replace(",", ".") + " °C");
-            lcdDisplay.DisplayText(1,"Light: " + light.ToString().Replace(",", "."));
-            lcdDisplay.DisplayText(2,"Motion detected: " + motion.ToString().Replace(",", "."));
-            lcdDisplay.DisplayText(3,"Humidity: " + feuchtigkeit.ToString().Replace(",", ".") + "%");
-            lcdDisplay.DisplayText(7,now.TimeOfDay.ToString());
+            // lcdDisplay.ClearText();
+            // var temp = tempSensor.GetTemperature();
+            // var light = lightSensor.GetLightIntensity();
+            // var motion = motionSensor.IsMotionDetected();
+            // var feuchtigkeit =feucht.GetHumidity();
+            // var now = new DateTime();
+            // lcdDisplay.DisplayText(0,"temp: " + temp.ToString().Replace(",", ".") + " °C");
+            // lcdDisplay.DisplayText(1,"Light: " + light.ToString().Replace(",", "."));
+            // lcdDisplay.DisplayText(2,"Motion detected: " + motion.ToString().Replace(",", "."));
+            // lcdDisplay.DisplayText(3,"Humidity: " + feuchtigkeit.ToString().Replace(",", ".") + "%");
+            // lcdDisplay.DisplayText(7,now.TimeOfDay.ToString());
 
 
         } while (!Console.KeyAvailable);
