@@ -11,7 +11,12 @@ namespace Program
         private static int PORT = 4223;
         static int nfcCounter = 0;
         static bool alarmActive = false;
-        static async void Main()
+
+        static void Main()
+        {
+            Task.Run(() => MainAsync()).Wait();
+        }
+        static async Task MainAsync()
         {
             IPConnection ipcon = new IPConnection();
             // //Sensoren
@@ -51,8 +56,8 @@ namespace Program
 
                 //Alarm switch
                 if (!rgbLEDButton.GetButtonState() && !alarmActive){
-                alarmActive = true;
-                rgbLEDButton.SetRGBLEDColor(255,0,0);
+                    alarmActive = true;
+                    rgbLEDButton.SetRGBLEDColor(255,0,0);
                 
                 }
                 else if(!rgbLEDButton.GetButtonState() && alarmActive){
@@ -70,7 +75,7 @@ namespace Program
 
 
                 //lcd-Bildschirm Stats
-                if (light > 500)
+                if (light > 30)
                     await ShowLCDDisplay(temp, light, motion, feuchtigkeit, lcdDisplay);
 
 

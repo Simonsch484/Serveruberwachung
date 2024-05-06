@@ -15,7 +15,7 @@ namespace Program
         public void DisplayText(byte lines, string text)
         {
             lcd.WriteLine(lines, 0, text);
-            Console.WriteLine($"Text auf dem LCD-Display angezeigt: {text}");
+            Console.WriteLine($"LCD-Display: {text}");
         }
         public void ClearText(){
             lcd.ClearDisplay();
