@@ -43,14 +43,13 @@ namespace Program
             buttonHandler.dualButton.SetStateChangedCallbackConfiguration(true);
             nfc.nfc.ReaderStateChangedCallback += nfc.ReaderStateChangedCB;
             nfc.nfc.SetMode(BrickletNFC.MODE_READER);
-
             do {
-
                 await Task.Delay(1000);
                 var temp = tempSensor.GetTemperature();
                 var light = lightSensor.GetLightIntensity();
                 var motion = motionSensor.IsMotionDetected();
                 var feuchtigkeit = feucht.GetHumidity();
+                var time = DateTime.Now.ToString("HHmm");
                 //nach 15 Malen wird zurückgesetzt
                 NFCCounter(nfc, 15);
 
@@ -72,7 +71,7 @@ namespace Program
                 await CheckTemp(temp,nfc,speaker,lcdDisplay);
                 await CheckHumidity(feuchtigkeit,nfc,speaker,lcdDisplay);
 
-                //segment.setText(temp);
+                segment.setText(time);
 
 
                 //lcd-Bildschirm Stats
